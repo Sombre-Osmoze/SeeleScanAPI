@@ -178,4 +178,21 @@ public class SeeleScanAPI {
 	}
 	#endif
 
+	#if canImport(Combine)
+	public func totalAccounts() -> AnyPublisher<Int, ErrorAPI> {
+		let log : StaticString = "Total Accounts"
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log)
+		#endif
+		return prepare(endpoints.metrics(.accountCount), for: MetricResponse.self, log: log)
+			.map { response -> Int in
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log, "%d accounts", response.data)
+				#endif
+				return response.data
+		}
+		.eraseToAnyPublisher()
+	}
+	#endif
 }
