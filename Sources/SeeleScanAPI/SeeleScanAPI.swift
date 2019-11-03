@@ -17,7 +17,7 @@ import Combine
 import os.signpost
 #endif
 
-@available(OSX 10.15, *)
+@available(OSX 10.15, iOS 13.0, *)
 public class SeeleScanAPI {
 
 	// MARK: - Logs
