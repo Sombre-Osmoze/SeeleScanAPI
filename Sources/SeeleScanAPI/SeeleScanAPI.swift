@@ -144,7 +144,7 @@ public class SeeleScanAPI {
 
 	#if canImport(Combine)
 	public func totalTransactions() -> AnyPublisher<Int, ErrorAPI> {
-		let log : StaticString = "Total Transactions Request"
+		let log : StaticString = "Total Transactions"
 
 		#if canImport(os)
 		os_signpost(.begin, log: logging, name: log)
@@ -159,4 +159,23 @@ public class SeeleScanAPI {
 		.eraseToAnyPublisher()
 	}
 	#endif
+
+	#if canImport(Combine)
+	public func totalBlocks() -> AnyPublisher<Int, ErrorAPI> {
+		let log : StaticString = "Total Blocks"
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log)
+		#endif
+		return prepare(endpoints.metrics(.blockCount), for: MetricResponse.self, log: log)
+			.map { response -> Int in
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log, "%d blocks", response.data)
+				#endif
+				return response.data
+		}
+		.eraseToAnyPublisher()
+	}
+	#endif
+
 }

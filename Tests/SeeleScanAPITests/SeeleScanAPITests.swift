@@ -45,6 +45,28 @@ final class SeeleScanAPITests: XCTestCase {
 	}
 
 
+	func testTotalBlocks() {
+		let expectation = XCTestExpectation(description: "Get the total number of blocks")
+
+		let cancel = interaction.totalBlocks()
+			.sink(receiveCompletion: { completion in
+				switch completion {
+				case .finished:
+					expectation.fulfill()
+					break;
+				case .failure(let error):
+					// TODO: Handle error case
+
+					XCTFail("A error occured")
+				}
+				expectation.fulfill()
+
+			}, receiveValue: { _ in expectation.fulfill() })
+
+		cancels.append(cancel)
+		wait(for: [expectation], timeout: 10)
+	}
+
     static var allTests = [
         ("Total transaction", testTotalTransaction),
     ]
