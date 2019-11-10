@@ -29,7 +29,7 @@ public struct Transaction: Codable, Identifiable {
 
 	public let fee : Int
 
-	public let accountNonce : String
+	public let accountNonce : String
 
 	public let payload : String
 
