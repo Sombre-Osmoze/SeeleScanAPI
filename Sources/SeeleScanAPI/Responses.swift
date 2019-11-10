@@ -68,14 +68,14 @@ protocol ResponseList: Codable {
 
 // MARK: - Metrics
 
-public struct MetricResponse : ResponseAPI {
+struct MetricResponse : ResponseAPI {
 
 	/// Error code, 0 is normal, non-zero is wrong
-	public let code: Int
+	let code: Int
 
 	/// Total number
-	public let data: Int
+	let data: Int
 
 	/// Errors, correct implementation of the empty
-	public let message: String
+	let message: String
 }
