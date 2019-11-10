@@ -43,6 +43,18 @@ public struct Page: PageInfo {
 	public let totalCount: Int
 }
 
+protocol ResponseList: Codable {
+
+	associatedtype ResponseData = Codable
+	var list : [ResponseData] { get }
+
+	associatedtype Info = PageInfo
+	var pageInfo : Info { get }
+}
+
+
+// MARK: - Account
+
 public struct AccountPage: PageInfo {
 
 	public let begin: Int
@@ -55,18 +67,6 @@ public struct AccountPage: PageInfo {
 
 	public var totalCount: Int
 }
-
-protocol ResponseList: Codable {
-
-	associatedtype ResponseData = Codable
-	var list : [ResponseData] { get }
-
-	associatedtype Info = PageInfo
-	var pageInfo : Info { get }
-}
-
-
-// MARK: - Account
 
 struct AccountList: ResponseList {
 
