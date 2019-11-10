@@ -1,0 +1,31 @@
+{
+	"code": 0,
+	"data": {
+		"list": [
+		{
+		"shardnumber": 1,
+		"rank": 1,
+		"address": "0x0b252fa6de61be780facf36815e4d4b763352f81",
+		"balance": 194400000000000,
+		"percentage": 0.5045157271877919,
+		"txcount": 21115
+		},
+		{
+		"shardnumber": 1,
+		"rank": 2,
+		"address": "0x4c10f2cd2159bb432094e3be7e17904c2b4aeb21",
+		"balance": 190920000000000,
+		"percentage": 0.495484272812208,
+		"txcount": 21120
+		}
+		],
+		"pageInfo": {
+			"begin": 0,
+			"curPage": 1,
+			"end": 2,
+			"totalBalance": 385320000000000,
+			"totalCount": 2
+		}
+	},
+	"message": ""
+}

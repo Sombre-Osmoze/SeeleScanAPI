@@ -18,7 +18,7 @@ public struct Account: Codable, Identifiable {
 
 	public let txcount : Int
 
-	public let txs : [Transaction]?
+	public let txs : [TransactionPreview]?
 
 	// MARK: Identifiable
 

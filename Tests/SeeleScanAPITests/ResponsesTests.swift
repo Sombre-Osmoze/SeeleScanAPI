@@ -19,7 +19,27 @@ class ResponsesTests: XCTestCase {
 
 	private var bundle : Bundle = .init(for: ResponsesTests.self)
 
+	// MARK: - Account
 
+	let accountFolder : URL = {
+		var url = responsesFolder
+		url.appendPathComponent("Account", isDirectory: true)
+		return url
+	}()
+
+	func testDecodeAccountList() throws {
+		let data = try file(named: "accounts", in: accountFolder)
+
+		XCTAssertNoThrow(try decoder.decode(AccountsResponse.self, from: data),
+						 "Decoding error for accounts")
+	}
+
+	func testDecodeAccount() throws {
+		let data = try file(named: "account", in: accountFolder)
+
+		XCTAssertNoThrow(try decoder.decode(AccountResponse.self, from: data),
+						 "Decoding error for account")
+	}
 
 	// MARK: - Metrics
 

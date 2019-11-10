@@ -66,6 +66,33 @@ protocol ResponseList: Codable {
 }
 
 
+// MARK: - Account
+
+struct AccountList: ResponseList {
+
+	let list: [Account]
+
+	let pageInfo: AccountPage
+}
+
+struct AccountsResponse: ResponseAPI {
+
+	let code: Int
+
+	let data: AccountList
+
+	let message: String
+}
+
+struct AccountResponse: ResponseAPI {
+
+	let code: Int
+
+	let data: Account
+
+	let message: String
+}
+
 // MARK: - Metrics
 
 struct MetricResponse : ResponseAPI {
