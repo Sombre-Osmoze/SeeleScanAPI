@@ -21,7 +21,7 @@ protocol ResponseAPI: Codable {
 
 // MARK: List
 
-public protocol PageInfo {
+public protocol PageInfo: Codable {
 
 	var begin : Int { get }
 
