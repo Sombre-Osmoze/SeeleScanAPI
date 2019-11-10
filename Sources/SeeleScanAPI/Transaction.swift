@@ -7,17 +7,15 @@
 
 import Foundation
 
-public struct Transaction: Codable, Identifiable {
-
-	public let txtype : Int
+public struct TransactionPreview: Codable, Identifiable {
 
 	public let shardnumber : Int
 
-	public let txHash : String
+	public let txtype : Int
+
+	public let hash : String
 
 	public let block : Int
-
-	public let age : String
 
 	public let from : String
 
@@ -25,18 +23,18 @@ public struct Transaction: Codable, Identifiable {
 
 	public let value : Int
 
-	public let pending : Bool
+	public let age : String
 
 	public let fee : Int
 
-	public let accountNonce : String
+	public let inorout : Bool
 
-	public let payload : String
+	public let pending : Bool
 
 	// MARK: Identifiable
 
 	public var id : String {
-		txHash
+		hash
 	}
 
 }
