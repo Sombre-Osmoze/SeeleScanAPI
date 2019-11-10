@@ -52,6 +52,29 @@ class EndpointsTests: XCTestCase {
 		}
 	}
 
+	// MARK: - Account Tests
+
+	func testAccountList() {
+		let valid = URL(string: "https://api.seelescan.net/api/v1/accounts?p=1&ps=10&s=1")!
+
+		// Set parameters
+		let param : Set<URLQueryItem> = [.init(page: 1), .init(size: 10), .init(shard: 1)]
+
+		XCTAssertEqual(endpoints.account(.list, param: param).absoluteURL, valid,
+					   "Unvalid route for account list request")
+	}
+
+	func testAccountDetails() {
+		let valid = URL(string: "https://api.seelescan.net/api/v1/account?address=0xf985d0da3b826aa9bcaed96ebaf26e1cd1cf4b51")!
+
+		// Set the parameter
+		let param = URLQueryItem(address: "0xf985d0da3b826aa9bcaed96ebaf26e1cd1cf4b51")
+
+		XCTAssertEqual(endpoints.account(.details, param: [param]).absoluteURL, valid,
+					   "Unvalid route for account details request")
+	}
+
+
 	// MARK: - Metrics Tests
 
 	/// Test the url for the transaction count request
