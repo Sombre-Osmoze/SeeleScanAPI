@@ -31,7 +31,7 @@ final class SeeleScanAPITests: XCTestCase {
 				case .finished:
 					expectation.fulfill()
 					break;
-				case .failure(let error):
+				case .failure(_):
 					// TODO: Handle error case
 
 					XCTFail("A error occured")
@@ -54,7 +54,7 @@ final class SeeleScanAPITests: XCTestCase {
 				case .finished:
 					expectation.fulfill()
 					break;
-				case .failure(let error):
+				case .failure(_):
 					// TODO: Handle error case
 
 					XCTFail("A error occured")
@@ -76,7 +76,7 @@ final class SeeleScanAPITests: XCTestCase {
 				case .finished:
 					expectation.fulfill()
 					break;
-				case .failure(let error):
+				case .failure(_):
 					// TODO: Handle error case
 
 					XCTFail("A error occured")
@@ -98,7 +98,7 @@ final class SeeleScanAPITests: XCTestCase {
 				case .finished:
 					expectation.fulfill()
 					break;
-				case .failure(let error):
+				case .failure(_):
 					// TODO: Handle error case
 
 					XCTFail("A error occured")
