@@ -143,6 +143,7 @@ public class SeeleScanAPI {
 	// MARK: - Metrics
 
 	#if canImport(Combine)
+	/// Get the total number of transactions
 	public func totalTransactions() -> AnyPublisher<Int, ErrorAPI> {
 		let log : StaticString = "Total Transactions"
 
@@ -161,6 +162,7 @@ public class SeeleScanAPI {
 	#endif
 
 	#if canImport(Combine)
+	/// Get the total number of block
 	public func totalBlocks() -> AnyPublisher<Int, ErrorAPI> {
 		let log : StaticString = "Total Blocks"
 
@@ -179,6 +181,7 @@ public class SeeleScanAPI {
 	#endif
 
 	#if canImport(Combine)
+	/// Get the total number of accounts
 	public func totalAccounts() -> AnyPublisher<Int, ErrorAPI> {
 		let log : StaticString = "Total Accounts"
 
@@ -197,6 +200,7 @@ public class SeeleScanAPI {
 	#endif
 
 	#if canImport(Combine)
+	/// Get the total number of contracts
 	public func totalContracts() -> AnyPublisher<Int, ErrorAPI> {
 		let log : StaticString = "Total Contracts"
 
