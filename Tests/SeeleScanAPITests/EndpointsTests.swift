@@ -15,15 +15,33 @@ class EndpointsTests: XCTestCase {
 
 	static var allTests = [
 		("Main URL check", testMainURL),
-		("Main URL check", testTransactionsCount),
-		("Main URL check", testBlockCount),
-		("Main URL check", testAccountCount),
-		("Main URL check", testContractCount),
+		// Account
+		("Account list URL check", testAccountList),
+		("Account details URL check", testAccountDetails),
+		// Metrics
+		("Transaction count URL check", testTransactionsCount),
+		("Block count URL check", testBlockCount),
+		("Account count URL check", testAccountCount),
+		("Contract count URL check", testContractCount),
 	]
 
 	/// Verify that the endpoint base url is valid
 	func testMainURL() {
 		let main = URL(string: "https://api.seelescan.net/")!
+
+		// Account
+
+		if let base = endpoints.account(.list).baseURL {
+			XCTAssertEqual(base, main, "The enpoints .list don't use the main URL")
+		} else {
+			XCTFail("No base url for a endpoint .list")
+		}
+
+		if let base = endpoints.account(.details).baseURL {
+			XCTAssertEqual(base, main, "The enpoints .details don't use the main URL")
+		} else {
+			XCTFail("No base url for a endpoint .details")
+		}
 
 		// Metrics
 
