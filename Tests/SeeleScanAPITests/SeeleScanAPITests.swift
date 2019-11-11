@@ -10,7 +10,6 @@
 import XCTest
 @testable import SeeleScanAPI
 
-@available(OSX 10.15, *)
 final class SeeleScanAPITests: XCTestCase {
 
 
@@ -18,9 +17,65 @@ final class SeeleScanAPITests: XCTestCase {
 
 	private var cancels : [Any] = []
 
+	// MARK: - Account
+
+	#if canImport(Combine)
+
+	func testAccountList() {
+		let page = 1
+		let size = 30
+		let shard = 1
+
+		let expectation = XCTestExpectation(description: "Get a \(size) account list in page 1")
+
+		let cancel = interaction.accountList(page: page, size: size, shard: shard)
+			.sink(receiveCompletion: { completion in
+				switch completion {
+				case .finished:
+					break;
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
+				}
+				expectation.fulfill()
+			}) { list, info in
+				XCTAssertEqual(info.curPage, page, "Icorrect page fetched")
+				XCTAssertEqual(list.count, size, "Incorrect page size")
+		}
+
+		cancels.append(cancel)
+		wait(for: [expectation], timeout: 10)
+	}
+
+	func testAccountDetail() {
+		let address = "0xf985d0da3b826aa9bcaed96ebaf26e1cd1cf4b51"
+
+		let expectation = XCTestExpectation(description: "Fetch account \(address) details")
+
+
+		let cancel = interaction.account(address: address)
+			.sink(receiveCompletion: { completion in
+				switch completion {
+				case .finished:
+					break;
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
+				}
+				expectation.fulfill()
+			}) { account in
+				XCTAssertEqual(account.address, address, "Fetched wrong account")
+		}
+
+		cancels.append(cancel)
+		wait(for: [expectation], timeout: 10)
+	}
+
+	#endif
+
+
 	// MARK: - Metrics
 
-	@available(OSX 10.15, *)
+	#if canImport(Combine)
+
 	func testTotalTransaction() {
 
 		let expectation = XCTestExpectation(description: "Get the total number of transactions")
@@ -29,16 +84,13 @@ final class SeeleScanAPITests: XCTestCase {
 			.sink(receiveCompletion: { completion in
 				switch completion {
 				case .finished:
-					expectation.fulfill()
 					break;
-				case .failure(_):
-					// TODO: Handle error case
-
-					XCTFail("A error occured")
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
 				}
 				expectation.fulfill()
 
-			}, receiveValue: { _ in expectation.fulfill() })
+			}, receiveValue: { _ in })
 
 		cancels.append(cancel)
 		wait(for: [expectation], timeout: 10)
@@ -52,16 +104,13 @@ final class SeeleScanAPITests: XCTestCase {
 			.sink(receiveCompletion: { completion in
 				switch completion {
 				case .finished:
-					expectation.fulfill()
 					break;
-				case .failure(_):
-					// TODO: Handle error case
-
-					XCTFail("A error occured")
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
 				}
 				expectation.fulfill()
 
-			}, receiveValue: { _ in expectation.fulfill() })
+			}, receiveValue: { _ in })
 
 		cancels.append(cancel)
 		wait(for: [expectation], timeout: 10)
@@ -74,16 +123,13 @@ final class SeeleScanAPITests: XCTestCase {
 			.sink(receiveCompletion: { completion in
 				switch completion {
 				case .finished:
-					expectation.fulfill()
 					break;
-				case .failure(_):
-					// TODO: Handle error case
-
-					XCTFail("A error occured")
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
 				}
 				expectation.fulfill()
 
-			}, receiveValue: { _ in expectation.fulfill() })
+			}, receiveValue: { _ in })
 
 		cancels.append(cancel)
 		wait(for: [expectation], timeout: 10)
@@ -96,22 +142,22 @@ final class SeeleScanAPITests: XCTestCase {
 			.sink(receiveCompletion: { completion in
 				switch completion {
 				case .finished:
-					expectation.fulfill()
 					break;
-				case .failure(_):
-					// TODO: Handle error case
-
-					XCTFail("A error occured")
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
 				}
 				expectation.fulfill()
 
-			}, receiveValue: { _ in expectation.fulfill() })
+			}, receiveValue: { _ in })
 
 		cancels.append(cancel)
 		wait(for: [expectation], timeout: 10)
 	}
 
+	#endif
+
     static var allTests = [
+		// Metrics
         ("Total transaction", testTotalTransaction),
 		("Total blocks", testTotalBlocks),
 		("Total accounts", testTotalAccounts),

@@ -17,7 +17,6 @@ import Combine
 import os.signpost
 #endif
 
-@available(OSX 10.15, iOS 13.0, watchOS 6.0, *)
 public class SeeleScanAPI {
 
 	// MARK: - Logs
@@ -139,6 +138,60 @@ public class SeeleScanAPI {
 		}
 	}
 
+	// MARK: - Account
+
+	#if canImport(Combine)
+	/// Get a list of accounts
+	/// - Parameters:
+	///   - page: The page number to display
+	///   - size: The number of pages displayed, the default value is 25
+	///   - shard: The shardNumber
+	public func accountList(page: Int, size: Int = 25, shard: Int) -> AnyPublisher<([Account], AccountPage), ErrorAPI> {
+		let log : StaticString = "Account list"
+
+		// Set parameters
+		let param : Set<URLQueryItem> = [.init(page: page), .init(size: size), .init(shard: shard)]
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log, "%d account for page %d in shard %d", page, size, shard)
+		#endif
+		return prepare(endpoints.account(.list, param: param), for: AccountsResponse.self, log: log)
+			.map { response -> ([Account], AccountPage) in
+				let info = response.data.pageInfo
+
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log,
+							"%d accounts for page %d in %d/%d\n Total balance: %d, Total: %d",
+							response.data.list, info.curPage, info.begin, info.end,
+							info.totalBalance, info.totalCount)
+				#endif
+				return (response.data.list, info)
+		}
+		.eraseToAnyPublisher()
+
+	}
+	#endif
+
+	#if canImport(Combine)
+	public func account(address: String) -> AnyPublisher<Account, ErrorAPI> {
+		let log : StaticString = "Account details"
+
+		let param : URLQueryItem = .init(address: address)
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log, "Detail for account %s", address)
+		#endif
+		return prepare(endpoints.account(.details, param: [param]), for: AccountResponse.self, log: log)
+			.map { response -> Account in
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log,
+							"%d in %s", response.data.balance, response.data.address)
+				#endif
+				return response.data
+		}
+		.eraseToAnyPublisher()
+	}
+	#endif
 
 	// MARK: - Metrics
 
