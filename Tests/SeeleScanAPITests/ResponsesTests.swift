@@ -19,6 +19,17 @@ class ResponsesTests: XCTestCase {
 
 	private var bundle : Bundle = .init(for: ResponsesTests.self)
 
+	static var allTests = [
+		// Account
+		("Account list decoding", testDecodeAccountList),
+		("Account details detail decoding", testDecodeAccount),
+		// Metrics
+		("Transaction count decoding", testDecodeTxCount),
+		("Block count decoding", testDecodeBlockCount),
+		("Account count decoding", testDecodeAccountCount),
+		("Contract count decoding", testDecodeContractCount),
+	]
+
 	// MARK: - Account
 
 	let accountFolder : URL = {
