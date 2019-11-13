@@ -16,7 +16,7 @@ class EndpointsTests: XCTestCase {
 	static var allTests = [
 		("Main URL check", testMainURL),
 		// Node
-		("Node list URL check", testNodeList)
+		("Node list URL check", testNodeList),
 		("Node details URL check", testNodeDetails),
 		("Node map URL check", testNodeMap),
 		// Account
