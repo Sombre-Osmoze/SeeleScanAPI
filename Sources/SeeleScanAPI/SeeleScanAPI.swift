@@ -138,6 +138,84 @@ public class SeeleScanAPI {
 		}
 	}
 
+
+	// MARK: - Node
+
+	#if canImport(Combine)
+	/// Get node list
+	/// - Parameters:
+	///   - page: The page number to display
+	///   - size: The number of pages displayed, the default value is 25
+	///   - shard: The shardNumber
+	public func nodeList(page: Int, size: Int = 25, shard: Int) -> AnyPublisher<([Node], Page), ErrorAPI> {
+		let log : StaticString = "Node List"
+
+		// Set parameters
+		let param : Set<URLQueryItem> = [.init(page: page), .init(size: size), .init(shard: shard)]
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log, "%d nodes for page %d in shard %d", page, size, shard)
+		#endif
+		return prepare(endpoints.node(.list, param: param), for: NodesResponse.self, log: log)
+			.map { response -> ([Node], Page) in
+				let info = response.data.pageInfo
+
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log,
+							"%d node for page %d in %d/%d\n Total: %d",
+							response.data.list, info.curPage, info.begin, info.end,
+							info.totalCount)
+				#endif
+				return (response.data.list, info)
+		}
+		.eraseToAnyPublisher()
+	}
+	#endif
+
+	#if canImport(Combine)
+	/// Get node details
+	/// - Parameter id: node's ID
+	public func node(id: String) -> AnyPublisher<Node, ErrorAPI> {
+		let log : StaticString = "Node details"
+
+		let param : URLQueryItem = .init(id: id)
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log, "Detail for node %s", id)
+		#endif
+		return prepare(endpoints.node(.details, param: [param]), for: NodeResponse.self, log: log)
+			.map { response -> Node in
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log,
+							"%s last seen %d", response.data.id, response.data.lastSeen)
+				#endif
+				return response.data
+		}
+		.eraseToAnyPublisher()
+	}
+	#endif
+
+	#if canImport(Combine)
+	/// Get node details
+	/// - Parameter id: node's ID
+	public func nodeMap() -> AnyPublisher<[Node], ErrorAPI> {
+		let log : StaticString = "Node map"
+
+		#if canImport(os)
+		os_signpost(.begin, log: logging, name: log)
+		#endif
+		return prepare(endpoints.node(.details), for: NodeMapResponse.self, log: log)
+			.map { response -> [Node] in
+				#if canImport(os)
+				os_signpost(.end, log: self.logging, name: log,
+							"fetched %d", response.data.count)
+				#endif
+				return response.data
+		}
+		.eraseToAnyPublisher()
+	}
+	#endif
+
 	// MARK: - Account
 
 	#if canImport(Combine)

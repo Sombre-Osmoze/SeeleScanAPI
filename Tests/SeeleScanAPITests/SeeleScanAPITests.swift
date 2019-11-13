@@ -17,6 +17,76 @@ final class SeeleScanAPITests: XCTestCase {
 
 	private var cancels : [Any] = []
 
+	// MARK: - Node
+
+	func testNodeList() {
+		let page = 1
+		let size = 30
+		let shard = 1
+
+		let expectation = XCTestExpectation(description: "Get a \(size) node list in page 1")
+
+		let cancel = interaction.nodeList(page: page, size: size, shard: shard)
+			.sink(receiveCompletion: { completion in
+				switch completion {
+				case .finished:
+					break;
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
+				}
+				expectation.fulfill()
+			}) { list, info in
+				XCTAssertEqual(info.curPage, page, "Icorrect page fetched")
+				XCTAssertEqual(list.count, size, "Incorrect page size")
+		}
+
+		cancels.append(cancel)
+		wait(for: [expectation], timeout: 10)
+	}
+
+	func testNodeDetail() {
+		let id = "0xb6f7b8641e53f216e45b840c30929eb9832a0a81"
+
+		let expectation = XCTestExpectation(description: "Fetch node \(id) details")
+
+
+		let cancel = interaction.node(id: id)
+			.sink(receiveCompletion: { completion in
+				switch completion {
+				case .finished:
+					break;
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
+				}
+				expectation.fulfill()
+			}) { account in
+				XCTAssertEqual(account.id, id, "Fetched wrong node")
+		}
+
+		cancels.append(cancel)
+		wait(for: [expectation], timeout: 10)
+	}
+
+	func testNodeMap() {
+
+		let expectation = XCTestExpectation(description: "Get a node map")
+
+		let cancel = interaction.nodeMap()
+			.sink(receiveCompletion: { completion in
+				switch completion {
+				case .finished:
+					break;
+				case .failure(let error):
+					XCTFail(error.localizedDescription)
+				}
+				expectation.fulfill()
+			}) { _ in }
+
+		cancels.append(cancel)
+		wait(for: [expectation], timeout: 10)
+	}
+
+
 	// MARK: - Account
 
 	#if canImport(Combine)
@@ -157,6 +227,13 @@ final class SeeleScanAPITests: XCTestCase {
 	#endif
 
     static var allTests = [
+		// Node
+		("Node list", testNodeList)
+		("Node details", testNodeDetail)
+		("Node map", testNodeMap)
+		// Account
+		("Account list", testAccountList)
+		("Account detail", testAccountDetail)
 		// Metrics
         ("Total transaction", testTotalTransaction),
 		("Total blocks", testTotalBlocks),
