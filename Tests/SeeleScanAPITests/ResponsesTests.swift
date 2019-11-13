@@ -20,6 +20,10 @@ class ResponsesTests: XCTestCase {
 	private var bundle : Bundle = .init(for: ResponsesTests.self)
 
 	static var allTests = [
+		// Node
+		("Node list decoding", testDecodeNodeList),
+		("Node details decoding", testDecodeNode),
+		("Node map decoding", testDecodeNodeMap),
 		// Account
 		("Account list decoding", testDecodeAccountList),
 		("Account details detail decoding", testDecodeAccount),
@@ -29,6 +33,36 @@ class ResponsesTests: XCTestCase {
 		("Account count decoding", testDecodeAccountCount),
 		("Contract count decoding", testDecodeContractCount),
 	]
+
+	// MARK: - Node
+
+	let nodeFolder : URL = {
+		var url = responsesFolder
+		url.appendPathComponent("Node", isDirectory: true)
+		return url
+	}()
+
+	func testDecodeNodeList() throws {
+		let data = try file(named: "nodes", in: nodeFolder)
+
+		XCTAssertNoThrow(try decoder.decode(NodesResponse.self, from: data),
+						 "Decoding error for nodes")
+	}
+
+	func testDecodeNode() throws {
+		let data = try file(named: "node", in: nodeFolder)
+
+		XCTAssertNoThrow(try decoder.decode(NodeResponse.self, from: data),
+						 "Decoding error for node")
+	}
+
+	func testDecodeNodeMap() throws {
+		let data = try file(named: "nodemap", in: nodeFolder)
+
+		XCTAssertNoThrow(try decoder.decode(NodeMapResponse.self, from: data),
+						 "Decoding error for nodemap")
+	}
+
 
 	// MARK: - Account
 

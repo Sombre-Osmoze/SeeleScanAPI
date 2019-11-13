@@ -53,6 +53,42 @@ protocol ResponseList: Codable {
 }
 
 
+// MARK: - Node
+
+struct NodeList: ResponseList {
+
+	let list: [Node]
+
+	var pageInfo: Page
+}
+
+struct NodesResponse: ResponseAPI {
+
+	let code: Int
+
+	let data: NodeList
+
+	let message: String
+}
+
+struct NodeResponse: ResponseAPI {
+
+	let code: Int
+
+	let data: Node
+
+	let message: String
+}
+
+struct NodeMapResponse: ResponseAPI {
+
+	let code: Int
+
+	let data: [Node]
+
+	let message: String
+}
+
 // MARK: - Account
 
 public struct AccountPage: PageInfo {

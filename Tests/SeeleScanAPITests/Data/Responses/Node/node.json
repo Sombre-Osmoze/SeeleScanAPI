@@ -1,0 +1,17 @@
+{
+	"code": 0,
+	"data": {
+		"ShardNumber": 1,
+		"ID": "0xb6f7b8641e53f216e45b840c30929eb9832a0a81",
+		"Host": "117.50.38.29",
+		"Port": "8057",
+		"City": "",
+		"Region": "",
+		"Country": "",
+		"Client": "",
+		"Caps": "lightSeele_1/1|lightSeele_2/1|lightSeele_3/1|lightSeele_4/1|seele/1",
+		"LastSeen": 1573421528,
+		"LongitudeAndLatitude": ""
+	},
+	"message": ""
+}
