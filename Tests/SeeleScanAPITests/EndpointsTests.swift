@@ -29,6 +29,26 @@ class EndpointsTests: XCTestCase {
 	func testMainURL() {
 		let main = URL(string: "https://api.seelescan.net/")!
 
+		// Node
+
+		if let base = endpoints.node(.list).baseURL {
+			XCTAssertEqual(base, main, "The enpoints .list don't use the main URL")
+		} else {
+			XCTFail("No base url for a endpoint .list")
+		}
+
+		if let base = endpoints.node(.details).baseURL {
+			XCTAssertEqual(base, main, "The enpoints .details don't use the main URL")
+		} else {
+			XCTFail("No base url for a endpoint .details")
+		}
+
+		if let base = endpoints.node(.map).baseURL {
+			XCTAssertEqual(base, main, "The enpoints .map don't use the main URL")
+		} else {
+			XCTFail("No base url for a endpoint .map")
+		}
+
 		// Account
 
 		if let base = endpoints.account(.list).baseURL {
@@ -68,6 +88,35 @@ class EndpointsTests: XCTestCase {
 		} else {
 			XCTFail("No base url for a endpoint .contractCount")
 		}
+	}
+
+	// MARK: - Node Tests
+
+	func testNodeList() {
+		let valid = URL(string: "https://api.seelescan.net/api/v1/nodes?p=1&ps=10&s=1")!
+
+		// Set parameters
+		let param : Set<URLQueryItem> = [.init(page: 1), .init(size: 10), .init(shard: 1)]
+
+		XCTAssertEqual(endpoints.node(.list, param: param).absoluteURL, valid,
+					   "Unvalid route for node list request")
+	}
+
+	func testNodeDetails() {
+		let valid = URL(string: "https://api.seelescan.net/api/v1/node?id=0xb6f7b8641e53f216e45b840c30929eb9832a0a81")!
+
+		// Set the parameters
+		let param = URLQueryItem(id: "0xb6f7b8641e53f216e45b840c30929eb9832a0a81")
+
+		XCTAssertEqual(endpoints.node(.details, param: [param]).absoluteURL, valid,
+					   "Unvalid route for node details request")
+	}
+
+	func testNodeMap() {
+		let valid = URL(string: "https://api.seelescan.net/api/v1/nodemap")!
+
+		XCTAssertEqual(endpoints.node(.map).absoluteURL, valid,
+					   "Unvalid route for node map request")
 	}
 
 	// MARK: - Account Tests

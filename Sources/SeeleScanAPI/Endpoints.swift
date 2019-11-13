@@ -22,6 +22,23 @@ public struct Endpoints {
 		URL(string: "/api/\(version.rawValue)/", relativeTo: domain)!
 	}
 
+	// MARK: Node
+
+	func node(_ route: Routes.Node, param: Set<URLQueryItem>? = nil) -> URL {
+		var url = main()
+
+		url.appendPathComponent(route.rawValue)
+
+		if let parameters = param {
+			var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+			components.queryItems = parameters.sorted(by: { $0.name < $1.name })
+
+			return components.url!
+		}
+
+		return url
+	}
+
 	// MARK: Account
 
 	func account(_ route: Routes.Account, param: Set<URLQueryItem>? = nil) -> URL {
@@ -61,6 +78,12 @@ public struct Endpoints {
 
 enum Routes {
 
+	enum Node: String {
+		case list = "nodes"
+		case details = "node"
+		case map = "nodemap"
+	}
+
 	enum Account: String {
 		case list = "accounts"
 		case details = "account"
@@ -86,7 +109,13 @@ extension URLQueryItem {
 		self = .init(name: "s", value: shard.description)
 	}
 
-	// MARK: - Account
+	// MARK: Node
+
+	init(id: String) {
+		self = .init(name: "id", value: id)
+	}
+
+	// MARK: Account
 
 	/// Create a url query item for a account
 	/// - Parameter address: Account address
@@ -94,7 +123,7 @@ extension URLQueryItem {
 		self = .init(name: "address", value: address)
 	}
 
-	// MARK: - Page
+	// MARK:  Page
 
 	/// Create a url query item for a page
 	/// - Parameter index: The page number to display
